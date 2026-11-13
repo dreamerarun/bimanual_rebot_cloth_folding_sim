@@ -160,6 +160,7 @@ The checklist above was executed from a clean clone of
 | same import **with** assets (symlinked to the fetched tree) | `dof 6`, TCP `gripper_end` |
 | `02_build_rebot_usd.py` from a copy of the upstream `urdf/` tree | 6 revolute + 2 prismatic, `/ReBot_Arm_RS` valid, 95,480,663-byte payload (identical to the shipped build) |
 | GUI replay of `outputs/actions_ep2.npz` | `success=True`, `fold_error=0.00 cm`, `delta=0.00 cm`, edge gap 4.6 ± 1.7 cm |
+| closed-loop eval from the clone (`--stats outputs/smolvla_run3_stats.json`) | `success=True`, `fold_error=0.00 cm`, edge gap 4.2 ± 1.3 cm |
 | replay artifacts | 340 JPEGs, MP4 960×540, 20 fps, 2.1 MB |
 
 The 436 MB asset tree was symlinked rather than re-cloned during the check;
