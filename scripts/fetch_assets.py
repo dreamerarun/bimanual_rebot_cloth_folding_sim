@@ -3,7 +3,6 @@
 
 Downloads (git clone) if missing:
   - https://github.com/Seeed-Projects/reBot-Isaacsim.git   -> assets/rebot_t701/
-  - https://github.com/Seeed-Projects/reBot-DevArm.git     -> assets/rebot_devarm/
 
 Run (headless, from the project root):
     env -u PYTHONPATH -u LD_LIBRARY_PATH \
@@ -23,10 +22,6 @@ CLONES = [
     (
         "https://github.com/Seeed-Projects/reBot-Isaacsim.git",
         PROJECT / "assets" / "rebot_t701",
-    ),
-    (
-        "https://github.com/Seeed-Projects/reBot-DevArm.git",
-        PROJECT / "assets" / "rebot_devarm",
     ),
 ]
 

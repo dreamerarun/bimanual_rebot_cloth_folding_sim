@@ -90,6 +90,9 @@ Large assets, datasets and checkpoints are **not** committed (see below).
   on `/`)
 
 ```bash
+git clone https://github.com/dreamerarun/rebot-cloth-fold.git
+cd rebot_cloth_fold
+
 conda create -n leisaac python=3.11 -y
 conda activate leisaac
 pip install "isaacsim[all]==5.1.0.0"
