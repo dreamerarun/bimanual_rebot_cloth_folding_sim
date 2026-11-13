@@ -117,7 +117,8 @@ python scripts/fetch_assets.py          # → assets/rebot_t701/
 # 2. Convert the URDF to the flat USD used by the env (one-time)
 env -u PYTHONPATH -u LD_LIBRARY_PATH \
   ~/miniconda3/envs/leisaac/bin/python scripts/02_build_rebot_usd.py
-# → assets/rebot_t701/usd/rebot_b601_flat.usd
+# → assets/rebot_t701/usd/rebot_b601_flat.usd  (6 revolute + 2 prismatic)
+#   plus assets/rebot_t701/usd/configuration/rebot_b601_flat_base.usd
 ```
 
 ---

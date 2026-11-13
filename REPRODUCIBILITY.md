@@ -52,8 +52,11 @@ env -u PYTHONPATH -u LD_LIBRARY_PATH \
   ~/miniconda3/envs/leisaac/bin/python scripts/02_build_rebot_usd.py
 ```
 
-* Expected check: `assets/rebot_t701/usd/rebot_b601_flat.usd` exists and the
-  default prim is `/ReBot_Arm_RS` with `ArticulationRootAPI` applied.
+* Expected check: `assets/rebot_t701/usd/rebot_b601_flat.usd` exists and reports
+  **6 revolute + 2 prismatic** joints, with a valid `/ReBot_Arm_RS` prim. The
+  importer writes the geometry payload next to it as
+  `usd/configuration/rebot_b601_flat_base.usd` (~95 MB); the env references
+  `/ReBot_Arm_RS` explicitly, so the wrapper needs no default prim.
 
 ## 2. Quick check — static (no GPU)
 
@@ -140,6 +143,7 @@ The checklist above was executed from a clean clone of
 | `import wam_fold.config` | `PROJECT_ROOT` resolves to the clone, cloth 0.52×0.52 m, resolution 20 |
 | `import wam_fold.rebot_kinematics` **without** assets | clear `FileNotFoundError` pointing at `scripts/fetch_assets.py` |
 | same import **with** assets (symlinked to the fetched tree) | `dof 6`, TCP `gripper_end` |
+| `02_build_rebot_usd.py` from a copy of the upstream `urdf/` tree | 6 revolute + 2 prismatic, `/ReBot_Arm_RS` valid, 95,480,663-byte payload (identical to the shipped build) |
 | GUI replay of `outputs/actions_ep2.npz` | `success=True`, `fold_error=0.00 cm`, `delta=0.00 cm`, edge gap 4.6 ± 1.7 cm |
 | replay artifacts | 340 JPEGs, MP4 960×540, 20 fps, 2.1 MB |
 

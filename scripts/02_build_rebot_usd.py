@@ -68,16 +68,17 @@ def convert(urdf: pathlib.Path, usd_path: pathlib.Path) -> None:
         # USD is referenced into a stage with PhysX active.  Manual application
         # causes "Nested articulation roots are not allowed".
         stage2 = Usd.Stage.Open(str(usd_path))
-        joints = [p for p in stage2.Traverse() if p.HasAPI(UsdPhysics.RevoluteJoint)]
+        joints = [p for p in stage2.Traverse() if p.GetTypeName() == "PhysicsRevoluteJoint"]
         print(f"[build] revolute joints: {len(joints)}")
         for p in joints:
             ax = UsdPhysics.RevoluteJoint(p).GetAxisAttr().Get()
             print(f"        {p.GetPath()} axis={ax}")
-        prims = [p for p in stage2.Traverse() if p.HasAPI(UsdPhysics.PrismaticJoint)]
+        prims = [p for p in stage2.Traverse() if p.GetTypeName() == "PhysicsPrismaticJoint"]
         print(f"[build] prismatic joints: {len(prims)}")
         for p in prims:
             print(f"        {p.GetPath()}")
-        print(f"[build] default prim now: {stage2.GetDefaultPrim()}")
+        root = stage2.GetPrimAtPath("/ReBot_Arm_RS")
+        print(f"[build] /ReBot_Arm_RS valid: {bool(root)}")
     finally:
         app.close()
 
