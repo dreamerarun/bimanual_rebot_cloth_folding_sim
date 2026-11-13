@@ -65,12 +65,13 @@ rebot_cloth_fold/
 │   ├── 07_convert_official_lerobot.py  # raw pickles → LeRobot v3 dataset
 │   ├── 08_eval_smolvla.py    # closed-loop eval (+ --save-actions)
 │   ├── 09_replay_gui.py      # smooth GUI replay of a saved action sequence
+│   ├── 10_export_stats_from_ckpt.py  # recover normalization stats from a checkpoint
 │   └── run_gui_eval.sh       # live GUI eval wrapper (offline HF, clean UI)
 ├── scene/rebot_cloth_fold.py # standalone scene builder / renderer
 ├── outputs/
 │   ├── fold_ep2_gui.mp4      # demo recording
 │   ├── actions_ep2.npz       # exact 340-step action sequence (0.00 cm fold)
-│   ├── smolvla_run3_stats.json  # normalization stats for the released policy
+│   ├── smolvla_run3_stats.json  # training normalization stats (from the checkpoint)
 │   └── record_ep2_keyframes/ # start / approach / carry / release / final
 ├── NOTES.md                  # full engineering log (phases 0–7, gotchas)
 ├── REPRODUCIBILITY.md        # verification checklist
@@ -158,8 +159,10 @@ run-to-run, so the edge gap may vary by 1–3 cm while the fold error stays 0.
 
 The exact checkpoint behind the 6/6 closed-loop result is attached to the
 [`v1.0-smolvla-run3` release](https://github.com/dreamerarun/rebot-cloth-fold/releases/tag/v1.0-smolvla-run3)
-(727 MB tar.gz). It needs no dataset to run — the normalization statistics are
-committed as `outputs/smolvla_run3_stats.json`.
+(727 MB tar.gz). It needs no dataset to run — the normalization statistics it
+was trained with are committed as `outputs/smolvla_run3_stats.json`
+(recovered from the checkpoint with
+`scripts/10_export_stats_from_ckpt.py`).
 
 ```bash
 curl -L -O https://github.com/dreamerarun/rebot-cloth-fold/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
@@ -282,6 +285,12 @@ Add `--gui --clean-ui` to watch, `--save-frames` to dump camera frames.
 * `train_expert_only=true` + `freeze_vision_encoder=true` is what makes
   SmolVLA fit in 6 GB. `lerobot 0.4.2` has no `gradient_checkpointing` config
   field despite the shared CLI help.
+* **Training snapshot vs. current raw set.** run3 was trained on the
+  62-episode snapshot (21,080 frames). The raw folder was later expanded to
+  80 episodes (27,200 frames) and reconverted, which overwrote `meta/stats.json`.
+  The shipped stats are therefore recovered from the checkpoint itself, so they
+  match the trained weights exactly — using the newer dataset stats still folded
+  but widened the mean edge gap from 1.4 cm to 4.2 cm.
 
 The full phase-by-phase log, including failed approaches and measurements, is
 in [`NOTES.md`](NOTES.md). A step-by-step verification checklist is in

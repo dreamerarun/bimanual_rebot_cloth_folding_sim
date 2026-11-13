@@ -126,14 +126,20 @@ Expected: `success=True`, `fold_error=0.00 cm` in most episodes; edge gap
    `bash scripts/collect_batch.sh 0 60 0.02`
    Expected: all `success=True`; failed episodes are discarded by default.
 2. **Convert**: `scripts/07_convert_official_lerobot.py --raw data/raw --out data/lerobot_official`.
-   Expected: 62 episodes / 21,080 frames / 20 fps / 2 cameras (top, front) /
-   14-D state and action.
+   Expected: one episode per pickle, 20 fps, 2 cameras (top, front),
+   14-D state and action. The reference raw set holds 80 episodes /
+   27,200 frames; run3 was trained on the earlier 62-episode snapshot
+   (21,080 frames).
 3. **Train** with the command in README step 3.
    Expected: ~0.09 s/step, loss ≈ 0.011 after 24k steps, 100 M trainable of
    450 M params, peak VRAM under 6 GB.
 4. **Evaluate** with `scripts/08_eval_smolvla.py` (README step 4).
    Expected on the reference checkpoint: 6/6 successes, fold error 0.00 cm in
    most episodes, edge gaps 0.7–5.4 cm.
+5. **Normalization stats**: if the dataset is reconverted, its `meta/stats.json`
+   changes. The release must be evaluated with the stats it was trained with:
+   `scripts/10_export_stats_from_ckpt.py --ckpt <ckpt> --out outputs/smolvla_run3_stats.json`.
+   Expected: 9 features, 21,080 training frames.
 
 ## Determinism notes
 
@@ -150,7 +156,7 @@ Expected: `success=True`, `fold_error=0.00 cm` in most episodes; edge gap
 ## Verification log (2026-11-13)
 
 The checklist above was executed from a clean clone of
-`https://github.com/dreamerarun/rebot-cloth-fold` (commit `b481b60`):
+`https://github.com/dreamerarun/rebot-cloth-fold` (`main`, 2026-11-13):
 
 | Check | Result |
 |---|---|
@@ -160,7 +166,9 @@ The checklist above was executed from a clean clone of
 | same import **with** assets (symlinked to the fetched tree) | `dof 6`, TCP `gripper_end` |
 | `02_build_rebot_usd.py` from a copy of the upstream `urdf/` tree | 6 revolute + 2 prismatic, `/ReBot_Arm_RS` valid, 95,480,663-byte payload (identical to the shipped build) |
 | GUI replay of `outputs/actions_ep2.npz` | `success=True`, `fold_error=0.00 cm`, `delta=0.00 cm`, edge gap 4.6 ± 1.7 cm |
-| closed-loop eval from the clone (`--stats outputs/smolvla_run3_stats.json`) | `success=True`, `fold_error=0.00 cm`, edge gap 4.2 ± 1.3 cm |
+| closed-loop eval from the clone (`--stats outputs/smolvla_run3_stats.json`) | `success=True`, `fold_error=0.00 cm`, edge gap 1.4 ± 2.3 cm |
+| same policy with the reconverted 80-episode stats (mismatch) | `success=True`, `fold_error=0.00 cm`, edge gap 4.2 ± 1.3 cm |
+| `10_export_stats_from_ckpt.py` round-trip | 9 features, 21,080 frames, byte-identical to the committed JSON |
 | replay artifacts | 340 JPEGs, MP4 960×540, 20 fps, 2.1 MB |
 
 The 436 MB asset tree was symlinked rather than re-cloned during the check;
