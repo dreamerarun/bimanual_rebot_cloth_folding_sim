@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+*.bak
+
+# Large / regenerated robot assets.  Fetched by scripts/fetch_assets.py
+# (clones https://github.com/Seeed-Projects/reBot-Isaacsim.git).
+assets/
+
+# Local scratch diagnostics (hard-coded asset paths) and the legacy WAM build
+scripts/_probe_*.py
+scripts/probe_*.py
+scripts/01_build_robot_usd.py
+
+# Datasets, checkpoints, logs, frame dumps
+data/
+outputs/*
+*.log
+!outputs/fold_ep2_gui.mp4
+!outputs/actions_ep2.npz
+!outputs/record_ep2_keyframes/
+!outputs/record_ep2_keyframes/**
+
+# OS
+.DS_Store
