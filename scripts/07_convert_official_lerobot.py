@@ -4,7 +4,7 @@ Usage:
     python scripts/07_convert_official_lerobot.py \
         --raw /mnt/ntfsdata/wam-cloth-fold/data/raw \
         --out /mnt/ntfsdata/wam-cloth-fold/data/lerobot_official \
-        --repo-id arun/rebot-cloth-fold
+        --repo-id ArunMurugesan/bimanual_rebot_cloth_folding_sim
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", default="/mnt/ntfsdata/wam-cloth-fold/data/raw")
     ap.add_argument("--out", default="/mnt/ntfsdata/wam-cloth-fold/data/lerobot_official")
-    ap.add_argument("--repo-id", default="arun/rebot-cloth-fold")
+    ap.add_argument("--repo-id", default="ArunMurugesan/bimanual_rebot_cloth_folding_sim")
     ap.add_argument("--fps", type=int, default=20)
     args = ap.parse_args()
 

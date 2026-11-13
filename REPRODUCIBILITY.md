@@ -129,7 +129,12 @@ Expected: `success=True`, `fold_error=0.00 cm` in most episodes; edge gap
    Expected: one episode per pickle, 20 fps, 2 cameras (top, front),
    14-D state and action. The reference raw set holds 80 episodes /
    27,200 frames; run3 was trained on the earlier 62-episode snapshot
-   (21,080 frames).
+   (21,080 frames). Alternatively download the published dataset:
+   ```python
+   from huggingface_hub import snapshot_download
+   snapshot_download("ArunMurugesan/bimanual_rebot_cloth_folding_sim",
+                     repo_type="dataset", local_dir="data/lerobot_official")
+   ```
 3. **Train** with the command in README step 3.
    Expected: ~0.09 s/step, loss ≈ 0.011 after 24k steps, 100 M trainable of
    450 M params, peak VRAM under 6 GB.

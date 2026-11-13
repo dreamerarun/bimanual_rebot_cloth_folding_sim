@@ -18,6 +18,12 @@ Demo (smooth GUI replay of episode 2, 0.00 cm fold error):
 
 ![final fold](outputs/record_ep2_keyframes/0339.jpg)
 
+### Dataset
+
+The 80-episode / 27,200-frame LeRobot v3 dataset (2.5 GB, top + front
+256×256 cameras, 14-D state/action) is on the Hugging Face Hub:
+[`ArunMurugesan/bimanual_rebot_cloth_folding_sim`](https://huggingface.co/datasets/ArunMurugesan/bimanual_rebot_cloth_folding_sim).
+
 ---
 
 ## How it works
@@ -211,7 +217,7 @@ env -u PYTHONPATH -u LD_LIBRARY_PATH ~/miniconda3/envs/leisaac/bin/python \
 
 ```bash
 lerobot-train \
-  --dataset.repo_id=<you>/rebot-cloth-fold \
+  --dataset.repo_id=ArunMurugesan/bimanual_rebot_cloth_folding_sim \
   --dataset.root=data/lerobot_official \
   --policy.type=smolvla \
   --policy.pretrained_path=lerobot/smolvla_base \
@@ -253,7 +259,8 @@ Add `--gui --clean-ui` to watch, `--save-frames` to dump camera frames.
 | Item | Why | How to get it |
 |---|---|---|
 | `assets/rebot_t701/` (436 MB) | Seeed's upstream repo, includes a 95 MB USD | `python scripts/fetch_assets.py` |
-| Dataset (62 eps, 2.5 GB + 10 GB raw) | Too large for git | regenerate with steps 1–2, or host on HF |
+| Raw pickles (80 eps, 10 GB) | Too large for git | regenerate with steps 1–2 |
+| LeRobot v3 dataset (80 eps, 2.5 GB) | Too large for git | [Hugging Face Hub](https://huggingface.co/datasets/ArunMurugesan/bimanual_rebot_cloth_folding_sim) |
 | Training checkpoints (1.2 GB) | Exceeds GitHub's git file limit | [release `v1.0-smolvla-run3`](https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim/releases/tag/v1.0-smolvla-run3) or retrain (step 3) |
 | Evaluation frame dumps / logs | Reproducible artifacts | regenerate |
 
