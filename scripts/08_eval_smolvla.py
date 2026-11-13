@@ -63,10 +63,10 @@ def to_policy_obs(env) -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", required=True)
-    ap.add_argument("--stats", default="/mnt/ntfsdata/wam-cloth-fold/data/lerobot_official/meta/stats.json")
+    ap.add_argument("--stats", default="outputs/smolvla_run3_stats.json")
     ap.add_argument("--episode-index", type=int, default=0)
     ap.add_argument("--max-steps", type=int, default=340)
-    ap.add_argument("--out", default="/mnt/ntfsdata/wam-cloth-fold/eval")
+    ap.add_argument("--out", default="outputs/eval")
     ap.add_argument("--save-frames", action="store_true")
     ap.add_argument("--gui", action="store_true", help="show the Isaac Sim window")
     ap.add_argument("--clean-ui", action="store_true",

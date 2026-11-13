@@ -11,7 +11,7 @@ cd "$(dirname "$0")/.."
 
 EP="${1:-1}"
 HOLD="${2:-180}"
-CKPT="${3:-/mnt/ntfsdata/wam-cloth-fold/train/smolvla_run3/checkpoints/last/pretrained_model}"
+CKPT="${3:-${CKPT:-/tmp/smolvla_run3}}"
 
 export HF_HUB_OFFLINE=1
 export TRANSFORMERS_OFFLINE=1

@@ -2,8 +2,8 @@
 # Collect one fresh-process episode at a time so cloth physics state never
 # carries over. Failed episodes are discarded automatically by run_episodes.
 set -u
-cd /home/arun/rebot_cloth_fold || exit 1
-OUT=${OUT:-/mnt/ntfsdata/wam-cloth-fold/data/raw}
+cd "$(dirname "$0")/.." || exit 1
+OUT=${OUT:-data/raw}
 START=${1:-5}
 COUNT=${2:-10}
 JITTER=${3:-0.0}
