@@ -70,6 +70,7 @@ rebot_cloth_fold/
 ├── outputs/
 │   ├── fold_ep2_gui.mp4      # demo recording
 │   ├── actions_ep2.npz       # exact 340-step action sequence (0.00 cm fold)
+│   ├── smolvla_run3_stats.json  # normalization stats for the released policy
 │   └── record_ep2_keyframes/ # start / approach / carry / release / final
 ├── NOTES.md                  # full engineering log (phases 0–7, gotchas)
 ├── REPRODUCIBILITY.md        # verification checklist
@@ -153,6 +154,27 @@ run-to-run, so the edge gap may vary by 1–3 cm while the fold error stays 0.
 
 ---
 
+## Trained policy (optional)
+
+The exact checkpoint behind the 6/6 closed-loop result is attached to the
+[`v1.0-smolvla-run3` release](https://github.com/dreamerarun/rebot-cloth-fold/releases/tag/v1.0-smolvla-run3)
+(727 MB tar.gz). It needs no dataset to run — the normalization statistics are
+committed as `outputs/smolvla_run3_stats.json`.
+
+```bash
+curl -L -O https://github.com/dreamerarun/rebot-cloth-fold/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
+tar -xzf smolvla_run3_pretrained_model.tar.gz -C /tmp   # → /tmp/smolvla_run3
+
+env -u PYTHONPATH -u LD_LIBRARY_PATH \
+  ~/miniconda3/envs/leisaac/bin/python -u scripts/08_eval_smolvla.py \
+  --ckpt /tmp/smolvla_run3 \
+  --stats outputs/smolvla_run3_stats.json \
+  --episode-index 1 --max-steps 340 \
+  --save-actions /tmp/actions_ep1.npz
+```
+
+---
+
 ## Full pipeline
 
 ### 1. Collect scripted demonstrations
@@ -208,11 +230,14 @@ lerobot-train \
 ```bash
 env -u PYTHONPATH -u LD_LIBRARY_PATH \
   ~/miniconda3/envs/leisaac/bin/python -u scripts/08_eval_smolvla.py \
-  --ckpt outputs/train/smolvla_run3/checkpoints/last/pretrained_model \
-  --stats data/lerobot_official/meta/stats.json \
+  --ckpt /tmp/smolvla_run3 \
+  --stats outputs/smolvla_run3_stats.json \
   --episode-index 1 --max-steps 340 \
   --save-actions /tmp/actions_ep1.npz
 ```
+
+(`--stats` is the dataset's `meta/stats.json`; a copy for the released
+checkpoint is committed, so no dataset is required for evaluation.)
 
 Runs one episode in a fresh process. The policy runs on **CPU** (Isaac Sim
 occupies most of the GPU), so each 25-step inference chunk takes ~1.6 s.
@@ -225,8 +250,8 @@ Add `--gui --clean-ui` to watch, `--save-frames` to dump camera frames.
 | Item | Why | How to get it |
 |---|---|---|
 | `assets/rebot_t701/` (436 MB) | Seeed's upstream repo, includes a 95 MB USD | `python scripts/fetch_assets.py` |
-| Dataset (62 eps, 13 GB with images) | Too large for git | regenerate with steps 1–2, or host on HF |
-| Checkpoints (1.5 GB each) | Exceeds GitHub limits | retrain (step 3) or host on HF with `lerobot-train --policy.push_to_hub=true` |
+| Dataset (62 eps, 2.5 GB + 10 GB raw) | Too large for git | regenerate with steps 1–2, or host on HF |
+| Training checkpoints (1.2 GB) | Exceeds GitHub's git file limit | [release `v1.0-smolvla-run3`](https://github.com/dreamerarun/rebot-cloth-fold/releases/tag/v1.0-smolvla-run3) or retrain (step 3) |
 | Evaluation frame dumps / logs | Reproducible artifacts | regenerate |
 
 ---

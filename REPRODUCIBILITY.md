@@ -105,7 +105,22 @@ Expected console lines:
 Expected artifacts: 340 JPEGs in `/tmp/fold_frames`, `/tmp/fold_ep2.mp4`
 (960×540, 20 fps, ~17 s). Compare against `outputs/fold_ep2_gui.mp4`.
 
-## 5. Full pipeline (optional, hours)
+## 5. Released checkpoint — closed-loop policy (no dataset needed)
+
+```bash
+curl -L -O https://github.com/dreamerarun/rebot-cloth-fold/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
+tar -xzf smolvla_run3_pretrained_model.tar.gz -C /tmp
+env -u PYTHONPATH -u LD_LIBRARY_PATH \
+  ~/miniconda3/envs/leisaac/bin/python -u scripts/08_eval_smolvla.py \
+  --ckpt /tmp/smolvla_run3 --stats outputs/smolvla_run3_stats.json \
+  --episode-index 1 --max-steps 340 --save-actions /tmp/actions_ep1.npz
+```
+
+Expected: `success=True`, `fold_error=0.00 cm` in most episodes; edge gap
+0.7–5.4 cm depending on the initial cloth pose. Policy inference runs on CPU
+(~1.6 s per 25-step chunk); add `--gui --clean-ui` to watch.
+
+## 6. Full pipeline (optional, hours)
 
 1. **Collect 60+ jittered episodes** — one fresh process per episode:
    `bash scripts/collect_batch.sh 0 60 0.02`

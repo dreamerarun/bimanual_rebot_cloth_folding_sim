@@ -23,6 +23,7 @@ outputs/*
 *.log
 !outputs/fold_ep2_gui.mp4
 !outputs/actions_ep2.npz
+!outputs/smolvla_run3_stats.json
 !outputs/record_ep2_keyframes/
 !outputs/record_ep2_keyframes/**
 
