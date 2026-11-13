@@ -108,7 +108,7 @@ Expected artifacts: 340 JPEGs in `/tmp/fold_frames`, `/tmp/fold_ep2.mp4`
 ## 5. Released checkpoint — closed-loop policy (no dataset needed)
 
 ```bash
-curl -L -O https://github.com/dreamerarun/rebot-cloth-fold/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
+curl -L -O https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
 tar -xzf smolvla_run3_pretrained_model.tar.gz -C /tmp
 env -u PYTHONPATH -u LD_LIBRARY_PATH \
   ~/miniconda3/envs/leisaac/bin/python -u scripts/08_eval_smolvla.py \
@@ -156,7 +156,7 @@ Expected: `success=True`, `fold_error=0.00 cm` in most episodes; edge gap
 ## Verification log (2026-11-13)
 
 The checklist above was executed from a clean clone of
-`https://github.com/dreamerarun/rebot-cloth-fold` (`main`, 2026-11-13):
+`https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim` (`main`, 2026-11-13):
 
 | Check | Result |
 |---|---|

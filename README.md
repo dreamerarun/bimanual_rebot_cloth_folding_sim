@@ -92,7 +92,7 @@ Large assets, datasets and checkpoints are **not** committed (see below).
   on `/`)
 
 ```bash
-git clone https://github.com/dreamerarun/rebot-cloth-fold.git
+git clone https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim.git
 cd rebot_cloth_fold
 
 conda create -n leisaac python=3.11 -y
@@ -158,14 +158,14 @@ run-to-run, so the edge gap may vary by 1–3 cm while the fold error stays 0.
 ## Trained policy (optional)
 
 The exact checkpoint behind the 6/6 closed-loop result is attached to the
-[`v1.0-smolvla-run3` release](https://github.com/dreamerarun/rebot-cloth-fold/releases/tag/v1.0-smolvla-run3)
+[`v1.0-smolvla-run3` release](https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim/releases/tag/v1.0-smolvla-run3)
 (727 MB tar.gz). It needs no dataset to run — the normalization statistics it
 was trained with are committed as `outputs/smolvla_run3_stats.json`
 (recovered from the checkpoint with
 `scripts/10_export_stats_from_ckpt.py`).
 
 ```bash
-curl -L -O https://github.com/dreamerarun/rebot-cloth-fold/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
+curl -L -O https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim/releases/download/v1.0-smolvla-run3/smolvla_run3_pretrained_model.tar.gz
 tar -xzf smolvla_run3_pretrained_model.tar.gz -C /tmp   # → /tmp/smolvla_run3
 
 env -u PYTHONPATH -u LD_LIBRARY_PATH \
@@ -254,7 +254,7 @@ Add `--gui --clean-ui` to watch, `--save-frames` to dump camera frames.
 |---|---|---|
 | `assets/rebot_t701/` (436 MB) | Seeed's upstream repo, includes a 95 MB USD | `python scripts/fetch_assets.py` |
 | Dataset (62 eps, 2.5 GB + 10 GB raw) | Too large for git | regenerate with steps 1–2, or host on HF |
-| Training checkpoints (1.2 GB) | Exceeds GitHub's git file limit | [release `v1.0-smolvla-run3`](https://github.com/dreamerarun/rebot-cloth-fold/releases/tag/v1.0-smolvla-run3) or retrain (step 3) |
+| Training checkpoints (1.2 GB) | Exceeds GitHub's git file limit | [release `v1.0-smolvla-run3`](https://github.com/dreamerarun/bimanual_rebot_cloth_folding_sim/releases/tag/v1.0-smolvla-run3) or retrain (step 3) |
 | Evaluation frame dumps / logs | Reproducible artifacts | regenerate |
 
 ---
