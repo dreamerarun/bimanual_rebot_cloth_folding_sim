@@ -10,7 +10,7 @@ scripted expert, then with a **SmolVLA** policy trained on 62 demonstrations.
 | Eval success rate | **6 / 6** episodes (run3 checkpoint) |
 | Edge gap (near edge to far edge) | 0.7 – 5.4 cm |
 | Demonstrations | 62 episodes / 21,080 frames, all successful |
-| Training | SmolVLA, expert-only LoRA-style finetune on a 6 GB RTX 4050 |
+| Training | SmolVLA, expert-only finetune (frozen vision encoder) on a 6 GB RTX 4050 |
 | Policy inference | CPU (Isaac Sim occupies ~5.2 GB of the 6 GB GPU) |
 
 Demo (smooth GUI replay of episode 2, 0.00 cm fold error):
