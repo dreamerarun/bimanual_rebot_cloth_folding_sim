@@ -129,6 +129,23 @@ Expected artifacts: 340 JPEGs in `/tmp/fold_frames`, `/tmp/fold_ep2.mp4`
 * Frames are not bit-identical across GPUs/driver versions (rasterisation and
   contact solvers differ); success metrics are the reproducible contract.
 
+## Verification log (2026-11-13)
+
+The checklist above was executed from a clean clone of
+`https://github.com/dreamerarun/rebot-cloth-fold` (commit `b481b60`):
+
+| Check | Result |
+|---|---|
+| `python -m compileall -q wam_fold scripts scene` | `COMPILE_OK` |
+| `import wam_fold.config` | `PROJECT_ROOT` resolves to the clone, cloth 0.52×0.52 m, resolution 20 |
+| `import wam_fold.rebot_kinematics` **without** assets | clear `FileNotFoundError` pointing at `scripts/fetch_assets.py` |
+| same import **with** assets (symlinked to the fetched tree) | `dof 6`, TCP `gripper_end` |
+| GUI replay of `outputs/actions_ep2.npz` | `success=True`, `fold_error=0.00 cm`, `delta=0.00 cm`, edge gap 4.6 ± 1.7 cm |
+| replay artifacts | 340 JPEGs, MP4 960×540, 20 fps, 2.1 MB |
+
+The 436 MB asset tree was symlinked rather than re-cloned during the check;
+`scripts/fetch_assets.py` performs the real clone and produces the same paths.
+
 ## Troubleshooting
 
 | Symptom | Cause / fix |
